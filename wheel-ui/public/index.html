@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+
+    
+
+    <!-- Bootstrap 5-->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <title>Bruh Wheel 2.0</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <nav class="navbar  navbar-expand-lg navbar-dark bg-dark ">
+      <div class = "container-fluid">
+        <a class = 'navbar-brand fs-2' href = '#'> Bruh Wheel </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav fs-4">
+            <li class="navbar-item">
+              <a class ='nav-link active' href= '#about'> About </a>
+            </li>
+            <li class="navbar-item "><a class = 'nav-link ' href = '#'> Login </a>  </li>
+          </ul>
+        </div>
+      </div>
+    </nav>     
+
+      <!--settings offcansvas part-->
+          <section id = 'settingsSection'> 
+            <div class="offcanvas offcanvas-start" data-bs-scroll="true" 
+            tabindex="-1" id="offcanvasWithBothOptions" 
+            aria-labelledby="offcanvasWithBothOptionsLabel">
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">        Settings Menu
+                </h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body">
+                <!-- Main settings part-->
+                <div id = 'settings-root'></div>
+              </div>
+            </div>
+          </section> <!--end settings offcansvas part-->
+
+
+
+    <!-- Maincontent part-->
+    <div id = 'main-page-content' class ='container-fluid'> 
+      <div class = 'row'>
+        <div id = 'left-content' class ='bg-dark  bg-gradient col-lg-3 col'>
+          <h1 class='text-center'>Rolled game</h1>
+          <div calss='rolled-game'> Here must be a rolled game</div>
+
+          <div class="d-flex justify-content-center p-2" id = 'settingsMenuButton'>
+            <button class="btn btn-light" 
+                    type="button" 
+                    data-bs-toggle="offcanvas" 
+                    data-bs-target="#offcanvasWithBothOptions" 
+                    aria-controls="offcanvasWithBothOptions">
+              Settings menu
+            </button>
+          </div>
+        </div> <!-- End of the left content-->
+
+        <div id = 'mid-content mh-100'  class ='p-2 bg-light bg-gradient col-lg-6'>
+       
+            <h1 class='text-center'>Wheel</h1>
+            <section>
+            <div  id ='wheel-root' class='container container-canvas'>
+            </div>
+            
+            </section>
+        </div> <!-- End of the mid content-->
+
+        <div id = 'right-content'class ='bg-dark  bg-gradient col-lg-3'>
+          <h1 class='text-center'>List of games</h1>
+        </div> <!-- End of the right content-->
+      </div>
+    </div><!-- End of maincontent-->
+
+    
+
+    <!-- FOOTER PART-->
+    <footer class="bg-dark text-center text-white">
+      <div id = 'about' class= 'container-fluid'>
+        <h3>Why BruhWheel?</h3>
+        <p>
+          It's just 4 fun site. Bruh - it's my nickname, Wheel - it's a way to get a random game.  BruhWheel can help you choose a game from Steam. Just push a roll button.  
+        </p>
+
+        <h3>How it work?</h3>
+        <p>
+          All games come from SteamAPI or steam SPY API and from some diffrent API. And library of the Bruh Wheel large as steam library large. 
+        </p>
+
+       
+        <p> And if u wanna see source of the code click 
+          <a class='link-success' target="_blank" href="https://github.com/OneBrov/GameWheel">here</a>
+        </p>
+      </div>
+   
+    </footer>
+
+  </body>
+</html>
