@@ -7,25 +7,29 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-#left-content, #right-content{
+#left-content, #right-content, #mid-content{
   color: #fff;
 }
 
-#wheel-canvas{
- 
-  margin: auto;
+canvas {
+
+  margin: auto auto auto;
   display: block ;
 }
 
 section {
   position: relative ;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#gameDiscription p {
+  margin-bottom: 0.4rem;
 }
 
 .rollButton {

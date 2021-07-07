@@ -14,7 +14,7 @@ class GameList(generics.ListAPIView):
 	
 	
 	def get_queryset(self):
-		queryset = Game.objects.all()
+		# queryset = Game.objects.all()
 		count_games = self.request.query_params.get('countgames')
 		price_more  = self.request.query_params.get('pricemore')
 		price_less  = self.request.query_params.get('priceless')
@@ -24,26 +24,20 @@ class GameList(generics.ListAPIView):
 			count_games = 3
 		else:
 			count_games = int(count_games)
-
 		if not price_more :
-			price_more = 3
+			price_more = 0
 		else:
 			price_more = int(price_more)
-
 		if not price_less :
-			price_less = 3
+			price_less = 100000
 		else:
 			price_less = int(price_less)
-			
-		myqueryset = queryset.order_by('?')[:count_games]	
-	
-	
-		# if price_less:
-		# 	price_less = int(price_less)
-		# 	query.add(Q(ru_price__lte=price_less))
-		# if price_more:
-		# 	price_more = int(price_more)
-		# 	query.add(Q(ru_price__gte=price_more))
+
+		myqueryset = Game.objects.filter(
+								ru_price__lte=price_less,
+                                ru_price__gte=price_more
+                               ).order_by('?')[:count_games]
+
 		return myqueryset
 
 

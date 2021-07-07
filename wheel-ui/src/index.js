@@ -1,151 +1,123 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 import './index.css';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {Navbar, OffCanvasPart, Maincontent, Footer} from './statichtmlparts'
+import axios from 'axios'
 
-
-
- const Circle = (props) => {
-     let ref = useRef();
-     
-     useEffect(() => {
-        let canvas = ref.current;
-        let context = canvas.getContext('2d');
-         
-        let ratio = getPixelRatio(context);
-        let width = getComputedStyle(canvas)
-            .getPropertyValue('width')
-            .slice(0, -2);
-        let height = getComputedStyle(canvas)
-            .getPropertyValue('height')
-            .slice(0, -2);
-         
-        canvas.width = width * ratio;
-
-        canvas.height = height * ratio;
-        canvas.style.width = `${width}px`;
-        canvas.style.height = `${height}px`;
-
-        
-        const render = () =>{
-          drawFullboxCircle(canvas, context, 5);
-        }; 
-
-        render();
-
-     });
-     
-     return (
-         <canvas 
-            id = {props.myId}
-            ref={ref} 
-            style={{ 
-              width: '500px',
-              height:'500px' ,
-               
-              transition: 'all cubic-bezier(0.23, 0.64, 0.36, 1) 5s'
-            }}
-         />
-     );
- };
-  
-
-function RollButton (props) {
-  const [rotatecount, setRotate] = useState(0);
-  const handleClick = ()=> {
-    console.log(props.elementName + ' start spinning')
-    setRotate(rotatecount + 360)
-    console.log(rotatecount)
-    document.getElementById(props.elementName).style.transform = 
-    'rotate(' + rotatecount + 'deg)';
+function MainLogic(){
+  const [isRoll, setRoll] = useState(false);
+  const [settings, setSetts] = useState({
+                                  countGames: '3',
+                                  priceMore: '0',
+                                  priceLess: '100000'
+                                 });
+  const [settigsLink, setLink] = useState(
+    'http://127.0.0.1:8000/api/game?&countGames=3&priceMore=0&priceLess=100000'
+    );
+  const [gamePool, setPool] = useState({})
+  const [rollAddParams, setRollParams] = useState('')
+  //return settings form params
+  function getSettings(newSetts) {
+    setSetts(newSetts);
   }
 
-  
-  return (
-    
-      <button className = 'rollButton' onClick = {handleClick}>
-        Roll
-      </button>
-    
-  )
-};
+  function changeRollCondition() {
+    setRoll(!isRoll);
+  }
 
-function GenreAPI() {
-  const [genres, setGenres] = useState([]);
+  useEffect( ()=> {
+    setLink(getLinkFromSettings(settings));
 
-  useEffect( () =>{
+  },[settings]);
+
+
+  useEffect( () => {
+    console.log(settigsLink)
+    console.log(settings)
+    console.log(isRoll)
+    console.log(gamePool)
+  });
+
+
+
+  useEffect ( ()=>{
+
     axios({
       method:'GET',
-      url: 'http://127.0.0.1:8000/api/genre/all/'
+      url: settigsLink
     }).then(response => {
-      setGenres(response.data)
-    })
-  },[]);
+      setPool(response.data)
+    }, )
 
-  return (
-    <div>
-      <ul>
-        {genres.map(g => (
-          <li key={g.id}>{g.genre}</li>
-        ))}
-      </ul>
-    </div>
-  );
+    //winner id
+    let winner = getRandomWinner(0,settings.countGames - 1  )
+    let rotateAmount = getRangomRotate(10, 30, 
+                                      settings.countGames, winner);
+    console.log(`The winner is ${winner} which spined ${rotateAmount} deg`)
+    setRollParams({winner:winner, rotate:rotateAmount})
+  },[settigsLink])
 
-};
+
+  return (    
+    <>
+      <Navbar/>
+      <OffCanvasPart getSettings={getSettings}/>
+      <Maincontent   
+        gamePool={gamePool} 
+        rollAddParams={rollAddParams}
+        getRoll={isRoll}
+
+        />
+      <Footer/>
+    </>
+    )
+}
 
 ReactDOM.render(
-  <GenreAPI/>,
-  document.getElementById('settings-root')
-);
-
-
-ReactDOM.render(
-  <>
-  <Circle myId = 'wheel-canvas' />
-  <RollButton elementName = 'wheel-canvas'/>
-  </>,
-  document.getElementById('wheel-root')
+  <React.StrictMode>
+    <MainLogic/>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-
-function drawFullboxCircle(canvas, context, splitCount) {
-  let CicleSize = canvas.width;  
-  let radius = CicleSize/2 ;
-  let x = radius;
-  let y = radius;
-
-  let splitAngle = 2* Math.PI / splitCount;
-
-  for (let i=0; i< splitCount;i++){
-    context.beginPath();
-    context.moveTo(x, y);
-    context.arc(x, y, radius, i*splitAngle, (i+1)*splitAngle,false);
-    context.lineWidth = radius;
-    let hueValue = i*15;
-    context.fillStyle = 'hsl(' + hueValue + ',70%, 60%)'; 
+reportWebVitals();
 
 
-    context.fill();
-    context.lineWidth = 2;
-    context.strokeStyle = '#444';
-    context.stroke()
+function getLinkFromSettings(params){
+  let myParams = params;
+  let seacrh = 'http://127.0.0.1:8000/api/game?';
+  for (let [key, value] of Object.entries(myParams)) {
+    if (seacrh.length > 1){
+          seacrh += '&';
+    }
+    seacrh += `${key}=${value}`;
   }
-};
+  return seacrh;
+}
 
-const getPixelRatio = context => {
-  let backingStore =   
-    context.backingStorePixelRatio ||
-    context.webkitBackingStorePixelRatio ||
-    context.mozBackingStorePixelRatio ||
-    context.msBackingStorePixelRatio ||
-    context.oBackingStorePixelRatio ||
-    context.backingStorePixelRatio ||
-    1;
 
-  return (window.devicePixelRatio || 1) / backingStore;
-};
+//in degrees
+function getRangomRotate(circMin, circMax, countGames, winner){
+  //number of full circles -> from 10 to 30
+  let circles = Math.floor(Math.random()*(circMax - circMin)) + circMin;
+  circles = circles * 360
+
+  // rotate amount not full circle spin
+  let lower_bound = 360/countGames * (winner)
+  let upper_bound = 360/countGames * (winner + 1)
+
+  let y = Math.floor(Math.random() *(upper_bound - lower_bound) ) + lower_bound;
+  return circles + y + 1
+}
+
+function getRandomWinner(min, max){
+  return Math.floor(
+    Math.random() * (max - min + 1) + min
+  )
+}
+
