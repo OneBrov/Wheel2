@@ -16,6 +16,15 @@ code {
   color: #fff;
 }
 
+
+.gameBox{
+border-radius: 50px;
+background: #27282f;
+box-shadow:  -28px -28px 57px #212228,
+             28px 28px 57px #2d2e36;
+}
+
+
 canvas {
 
   margin: auto auto auto;
@@ -30,6 +39,10 @@ section {
 
 #gameDiscription p {
   margin-bottom: 0.4rem;
+}
+
+#main-page-content{
+  background-color: #1a1b1e !important;
 }
 
 .rollButton {

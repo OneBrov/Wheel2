@@ -9,7 +9,7 @@ function Game(props){
 		props.class = 'fullGame'
 	}
 	return (
-		<div id = 'rolledGame' className='text-white bg-dark fs-5 '>
+		<div id = 'rolledGame' className='text-white fs-6 '>
 			<div id='rolledGamePicture' className='mx-3 my-3'>
 				<img src={pictureLink} 
 					className='img-fluid' 

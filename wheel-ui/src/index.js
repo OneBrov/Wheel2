@@ -40,23 +40,20 @@ function MainLogic(){
     console.log(gamePool)
   });
 
-
-
   useEffect ( ()=>{
-
     axios({
       method:'GET',
       url: settigsLink
     }).then(response => {
       setPool(response.data)
     }, )
-
     //winner id
     let winner = getRandomWinner(0,settings.countGames - 1  )
     let rotateAmount = getRangomRotate(10, 30, 
                                       settings.countGames, winner);
     console.log(`The winner is ${winner} which spined ${rotateAmount} deg`)
     setRollParams({winner:winner, rotate:rotateAmount})
+    toZeroRotate('wheel-canvas')
   },[settigsLink])
 
 
@@ -119,5 +116,18 @@ function getRandomWinner(min, max){
   return Math.floor(
     Math.random() * (max - min + 1) + min
   )
+}
+
+function toZeroRotate (elementId){
+  if (document.getElementById(elementId) == undefined){
+    return
+  }
+  let myCanvas = document.getElementById(elementId).style;
+  //restore circle to start position
+  let myTrans = myCanvas.transition;
+  myCanvas.transition= `all ease-in-out 0ms`;
+  myCanvas.transform = 'rotate(' + 0 + 'deg)';
+  //return back transition propherties
+  setTimeout( () => {myCanvas.transition = myTrans;}, 0)
 }
 

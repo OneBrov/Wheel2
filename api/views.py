@@ -15,9 +15,9 @@ class GameList(generics.ListAPIView):
 	
 	def get_queryset(self):
 		# queryset = Game.objects.all()
-		count_games = self.request.query_params.get('countgames')
-		price_more  = self.request.query_params.get('pricemore')
-		price_less  = self.request.query_params.get('priceless')
+		count_games = self.request.query_params.get('countGames')
+		price_more  = self.request.query_params.get('priceMore')
+		price_less  = self.request.query_params.get('priceLess')
 		# Multi-field search
 		print(count_games, price_more, price_less)
 		if not count_games :

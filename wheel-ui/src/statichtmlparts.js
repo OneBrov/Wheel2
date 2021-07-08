@@ -17,7 +17,13 @@ function Navbar(props)  {
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav fs-4">
             <li className="navbar-item">
-              <a className ='nav-link active' href= '#settingsMenuButton'> Settings </a>
+              <a className ='nav-link active' 
+                    href="#offcanvasWithBothOptions"
+                    role="button"
+                    data-bs-toggle="offcanvas" 
+                    data-bs-target="#offcanvasWithBothOptions" 
+                    aria-controls="offcanvasWithBothOptions"
+              > Settings </a>
             </li>
             <li className="navbar-item">
               <a className ='nav-link active' href= '#about'> About </a>
@@ -61,29 +67,30 @@ function OffCanvasPart(props)  {
 };
 
 function Maincontent (props){
-  let game = props.gamePool[props.rollAddParams.winner];
-  let games =props.gamePool
+  let game  = props.gamePool[props.rollAddParams.winner];
+  let games = props.gamePool;
+  let rotateAmount = props.rollAddParams.rotate;
   let gameobj;
   let gamesObj;
   // if (props.gamePool){
   if (typeof game !== "undefined"){
-    gameobj =  <div className='bg-dark  mx-3 my-3 '>
+    gameobj =  <div className='mx-3 my-3 '>
                   <Game rolledGame={props.gamePool[props.rollAddParams.winner]}/>
                </div>
   } else{
-    gameobj = <div> <h2> The game steel not rolled </h2> </div>
+    gameobj = <div> <h2> The game still not rolled </h2> </div>
   }
 
   if (typeof games !== "undefined" && games.length > 0 ){
     gamesObj =   games.map(g => (
-      <div className='bg-dark  mx-3 my-3 '>
+      <div className='mx-3 my-3 '>
       <h4 className='text-center'>{g.name}</h4>
       <Game rolledGame={g} myClass='collapse' myId={`gameDesc${g.appid}`}/>
-      <p>       
+      <div className='d-flex justify-content-center'>       
         <button class="btn btn-light align-middle" type="button" data-bs-toggle="collapse" data-bs-target={`#gameDesc${g.appid}`} aria-expanded="false" aria-controls={`gameDesc${g.appid}`}>
-          Togle description
+          Toggle description
         </button>
-      </p>
+      </div>
 
       </div>
       ));
@@ -92,12 +99,13 @@ function Maincontent (props){
     gamesObj = <div> <h2> The list is empty </h2> </div>
 
   }
+
 	return (
-		<div id = 'main-page-content' className ='container-fluid'> 
+		<div id = 'main-page-content' className ='container-fluid  bg-gradient'> 
       <div className = 'row'>
-        <div id = 'left-content' className ='bg-dark  bg-gradient col-lg-3 col'>
+        <div id = 'left-content' className =' col-lg-3 col'>
           <h1 className='text-center my-4'>Rolled game</h1>
-            <div className='bg-dark'>
+            <div className='gameBox pt-3'>
               {gameobj} 
             </div>
           <div className="d-flex justify-content-center p-2" id = 'settingsMenuButton'>
@@ -112,24 +120,31 @@ function Maincontent (props){
           </div>
         </div> 
 
-        <div id = 'mid-content'  className ='p-2 bg-dark bg-gradient col-lg-6'>
+        <div id = 'mid-content'  className ='p-2 col-lg-6'>
        
             <h1 className='text-center  my-4'>Wheel</h1>
             <section>
             <div  id ='wheel-root' className='container container-canvas'>
               <div className="wheel-canvas">
                 
-                <Circle id = 'wheel-canvas'/>
-                <RollButton elementName='wheel-canvas'/>
+                <Circle 
+                  id = 'wheel-canvas' 
+                  games={props.gamePool}
+                  tranDuration='5s'
+                />
+                <RollButton 
+                  elementName='wheel-canvas' 
+                  rotateAmount={props.rollAddParams.rotate}
+                />
               </div>
             </div>
             
             </section>
         </div> 
 
-        <div id = 'right-content'className ='bg-dark  bg-gradient col-lg-3'>
+        <div id = 'right-content'className ='col-lg-3'>
           <h1 className='text-center  my-4'>List of games</h1>
-            <div className='bg-dark'>
+            <div className='gameBox pt-3'>
             {gamesObj}
             </div>
         </div> 
