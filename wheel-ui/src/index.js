@@ -17,7 +17,9 @@ function MainLogic(){
     'http://127.0.0.1:8000/api/game?&countGames=3&priceMore=0&priceLess=100000'
     );
   const [gamePool, setPool] = useState({})
-  const [rollAddParams, setRollParams] = useState('')
+  const [rollAddParams, setRollParams] = useState(
+      {winner:0, rotate:0}
+    )
   //return settings form params
   function getSettings(newSetts) {
     setSetts(newSetts);
@@ -27,6 +29,8 @@ function MainLogic(){
     setRoll(!isRoll);
   }
 
+
+
 // logging effect
   useEffect( () => {
     console.log(settigsLink)
@@ -34,7 +38,7 @@ function MainLogic(){
     console.log(isRoll)
     console.log(gamePool)
   });
-// update games effect
+// if setting form changed
   useEffect( ()=> {
     setLink(getLinkFromSettings(settings));
   },[settings]);
@@ -46,21 +50,29 @@ function MainLogic(){
       url: settigsLink
     }).then(response => {
       setPool(response.data)
-       //winner id
     })
 
   },[settigsLink, isRoll])
 
 // update games effect  
   useEffect ( ()=> {
-    
         let winner = getRandomWinner(0,gamePool.length - 1  )
-        let rotateAmount = getRangomRotate(10, 30, 
-                                        gamePool.length, winner);
-        console.log(`The winner is ${winner} which spined ${rotateAmount} deg`)
-        setRollParams({winner:winner, rotate:rotateAmount})
-     
+        let rotateAmount = 
+                   getRangomRotate(10, 30, gamePool.length, winner);
+                   // rollAddParams.rotate +
+        let rotate = rollAddParams.rotate ?  rollAddParams.rotate + rotateAmount 
+                                             :  0 + rotateAmount;
+
+        document.getElementById('wheel-canvas').style.transform = 
+      'rotate(' + (rotate) + 'deg)';
+      //after 1 roll, our rotate prop store old + new rotate. And we need to compute new winner
+       let actuallyWinner = (~~(  rotate%360 / (360/gamePool.length)  )  ) 
+       setRollParams({winner:actuallyWinner, rotate:rotate})
+
   },[gamePool])
+
+
+
 
   return (    
     <>
@@ -71,7 +83,6 @@ function MainLogic(){
         rollAddParams={rollAddParams}
         changeRollCondition={changeRollCondition}
         isRoll={isRoll}
-
         />
       <Footer/>
     </>
@@ -128,12 +139,13 @@ function toZeroRotate (elementId){
   if (document.getElementById(elementId) == undefined){
     return
   }
-  let myCanvas = document.getElementById(elementId).style;
+  var myCanvas = document.getElementById(elementId).style;
   //restore circle to start position
   const myTrans = myCanvas.transition;
   myCanvas.transition= `all ease-in-out 0ms`;
   myCanvas.transform = 'rotate(' + 0 + 'deg)';
+  // myCanvas.transition = myTrans;
   //return back transition propherties
-  setTimeout( () => {myCanvas.transition = myTrans;}, 2)
+   setTimeout( () => {myCanvas.transition = myTrans;}, 0)
 }
 

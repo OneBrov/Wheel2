@@ -169,8 +169,10 @@ function RollButton (props) {
     //   5000) //props.tranDuration
 
     console.log(rotateAmount)
+    let myRotate =  document.getElementById(props.elementName).style.transform.rotate;
+ 
     document.getElementById(props.elementName).style.transform = 
-    'rotate(' + rotateAmount + 'deg)';
+    'rotate(' + myRotate + rotateAmount + 'deg)';
   }
 
   

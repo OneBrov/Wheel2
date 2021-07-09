@@ -71,16 +71,21 @@ function Maincontent (props){
   let game  = props.gamePool[props.rollAddParams.winner];
   let games = props.gamePool;
   let rotateAmount = props.rollAddParams.rotate;
-  let gameobj;
+  let gameobj = (game) ? <div className='mx-3 my-3 '>
+                           <Game rolledGame={props.gamePool[props.rollAddParams.winner]}/>
+                         </div> 
+                       : <div> <h2> The game still not rolled </h2> </div>
+
   let gamesObj;
   // if (props.gamePool){
-  if (typeof game !== "undefined"){
-    gameobj =  <div className='mx-3 my-3 '>
-                  <Game rolledGame={props.gamePool[props.rollAddParams.winner]}/>
-               </div>
-  } else{
-    gameobj = <div> <h2> The game still not rolled </h2> </div>
-  }
+
+  // if (typeof game !== "undefined"){
+  //   gameobj =  <div className='mx-3 my-3 '>
+  //                 <Game rolledGame={props.gamePool[props.rollAddParams.winner]}/>
+  //              </div>
+  // } else{
+  //   gameobj = <div> <h2> The game still not rolled </h2> </div>
+  // }
 
   if (typeof games !== "undefined" && games.length > 0 ){
     gamesObj =   games.map(g => (
