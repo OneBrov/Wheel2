@@ -4,7 +4,6 @@ import { Circle, RollButton} from './wheel'
 import {Game} from './gameToHtml'
 
 
-
 function Navbar(props)  {
 	return (
     <nav className="navbar  navbar-expand-lg navbar-dark bg-dark ">
@@ -66,6 +65,8 @@ function OffCanvasPart(props)  {
 	);
 };
 
+
+//Get all of the main content
 function Maincontent (props){
   let game  = props.gamePool[props.rollAddParams.winner];
   let games = props.gamePool;
@@ -100,13 +101,16 @@ function Maincontent (props){
 
   }
 
+
 	return (
 		<div id = 'main-page-content' className ='container-fluid  bg-gradient'> 
       <div className = 'row'>
         <div id = 'left-content' className =' col-lg-3 col'>
           <h1 className='text-center my-4'>Rolled game</h1>
-            <div className='gameBox pt-3'>
-              {gameobj} 
+            <div className='gameBox py-3'>
+              <div  id='RolledGameCollapse'>
+                {gameobj} 
+              </div>
             </div>
           <div className="d-flex justify-content-center p-2" id = 'settingsMenuButton'>
             <button 
@@ -135,6 +139,8 @@ function Maincontent (props){
                 <RollButton 
                   elementName='wheel-canvas' 
                   rotateAmount={props.rollAddParams.rotate}
+                  changeRollCondition={props.changeRollCondition}
+                  tranDuration='5s'
                 />
               </div>
             </div>
@@ -144,7 +150,7 @@ function Maincontent (props){
 
         <div id = 'right-content'className ='col-lg-3'>
           <h1 className='text-center  my-4'>List of games</h1>
-            <div className='gameBox pt-3'>
+            <div className='gameBox py-3'>
             {gamesObj}
             </div>
         </div> 

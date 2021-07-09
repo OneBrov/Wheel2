@@ -155,10 +155,19 @@ const getPixelRatio = context => {
 };
 
 function RollButton (props) {
-  const [rotatecount, setRotate] = useState(0);
   const rotateAmount = props.rotateAmount;
+
   const handleClick = ()=> {
     console.log(props.elementName + ' start spinning')
+    props.changeRollCondition();
+
+    console.log(props.tranDuration);
+    // setTimeout( 
+    //   () => {
+    //     props.changeRollCondition()
+    //   } , 
+    //   5000) //props.tranDuration
+
     console.log(rotateAmount)
     document.getElementById(props.elementName).style.transform = 
     'rotate(' + rotateAmount + 'deg)';
